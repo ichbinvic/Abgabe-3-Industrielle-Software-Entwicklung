@@ -31,3 +31,18 @@ filtered_data = data[selected_columns]
 # Die ersten 5 Einträge des neuen DataFrames ausgeben
 print("\nFiltered DataFrame:")
 print(filtered_data.head(5))
+
+# Spalten "Month Number", "Month Name" und "Year" zu einem kombinierten Datum verbinden
+if all(col in data.columns for col in ["Month Number", "Month Name", "Year"]):
+    data['Combined Date'] = pd.to_datetime(
+        data['Year'].astype(str) + '-' + data['Month Number'].astype(str),
+        format='%Y-%m',
+        errors='coerce'
+    ).dt.strftime('%m/%Y')
+
+    # DataFrame auf die kombinierte Spalte reduzieren
+    data = data[['Combined Date']]
+
+    # Die ersten 5 Einträge des neuen DataFrames ausgeben
+    print("\nCombined Date DataFrame:")
+    print(data['Combined Date'].head(5).tolist())
